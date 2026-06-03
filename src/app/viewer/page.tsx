@@ -8,7 +8,12 @@ import { Button } from "@/components/ui/button";
 import { PageTransition } from "@/components/shared/page-transition";
 import { UploadArea } from "@/components/viewer/upload-area";
 import { SliceViewer } from "@/components/viewer/slice-viewer";
-import { MeshViewer } from "@/components/viewer/mesh-viewer";
+import dynamic from "next/dynamic";
+
+const MeshViewer = dynamic(() => import("@/components/viewer/mesh-viewer").then(mod => mod.MeshViewer), { 
+  ssr: false,
+  loading: () => <div className="aspect-square rounded-xl bg-black/60 border border-border/50 animate-pulse flex items-center justify-center"><p className="text-muted-foreground text-sm">Loading 3D Viewer...</p></div>
+});
 
 export default function ViewerPage() {
   const [file, setFile] = useState<File | null>(null);

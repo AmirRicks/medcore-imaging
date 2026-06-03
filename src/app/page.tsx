@@ -16,9 +16,14 @@ import {
   Download,
   Calculator
 } from "lucide-react";
+import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
 import { PageTransition } from "@/components/shared/page-transition";
-import { Hero3D } from "@/components/shared/hero-3d";
+
+const Hero3D = dynamic(() => import("@/components/shared/hero-3d").then(mod => mod.Hero3D), { 
+  ssr: false,
+  loading: () => <div className="absolute inset-0 -z-10 h-full w-full bg-cyan-500/5 animate-pulse" />
+});
 
 export default function Home() {
   return (
