@@ -1,38 +1,57 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Calculator, Info } from "lucide-react";
+import { Calculator, Info, Shield, Scale } from "lucide-react";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { PageTransition } from "@/components/shared/page-transition";
 import { DoseCalculatorForm } from "@/components/dose/calculator-form";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DRLComplianceChecker } from "@/components/dose/compliance-checker";
+import { Card, CardContent } from "@/components/ui/card";
 
 export default function DoseCalculatorPage() {
   return (
     <PageTransition>
-      <div className="space-y-6">
+      <div className="space-y-6 pb-16">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Radiation Dose Calculator</h1>
-          <p className="text-sm text-muted-foreground">
-            CT effective dose (ICRP-102), SSDE (AAPM-204), and DRL compliance (EC-RP-185)
+          <h1 className="text-3xl font-bold text-white tracking-tight">Medical Physics Tools</h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            Clinical calculators for radiation dose — built on published standards.
           </p>
         </div>
 
-        <Card className="border-cyan-500/20 bg-cyan-500/5">
+        <Card className="glass-card border-none">
           <CardContent className="flex items-start gap-3 p-4">
             <Info className="h-5 w-5 text-cyan-400 shrink-0 mt-0.5" />
             <div className="text-xs text-muted-foreground leading-relaxed">
-              <p className="font-medium text-foreground mb-1">Standards-Based Calculation</p>
+              <p className="font-bold text-white mb-0.5">Clinical Standards Policy & Computation Notice</p>
               <p>
-                All dose values are computed using deterministic formulas from ICRP Publication 102,
-                AAPM Report 204, and EC Radiation Protection 185. DRLs are statistical investigation
-                thresholds set at the 75th percentile — exceeding a DRL triggers review, not alarm.
-                Dose calculations are for educational reference only.
+                All computation occurs locally in your browser. Calculations comply with ICRP Publication 102 (DLP × k-factors), AAPM Report 204 (SSDE diameter correction), and European Commission RP 185 adult reference standards. These tools are for educational/portfolio demonstration and are not cleared for medical diagnosis.
               </p>
             </div>
           </CardContent>
         </Card>
 
-        <DoseCalculatorForm />
+        <Tabs defaultValue="effective-dose" className="w-full">
+          <TabsList className="mb-6">
+            <TabsTrigger value="effective-dose" className="text-xs font-semibold uppercase tracking-wider">
+              <Calculator className="h-4 w-4 mr-1.5" />
+              Effective Dose Calculator
+            </TabsTrigger>
+            <TabsTrigger value="drl-compliance" className="text-xs font-semibold uppercase tracking-wider">
+              <Scale className="h-4 w-4 mr-1.5" />
+              DRL Compliance Checker
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="effective-dose">
+            <DoseCalculatorForm />
+          </TabsContent>
+
+          <TabsContent value="drl-compliance">
+            <DRLComplianceChecker />
+          </TabsContent>
+
+        </Tabs>
       </div>
     </PageTransition>
   );

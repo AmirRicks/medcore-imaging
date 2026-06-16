@@ -2,320 +2,447 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useState } from "react";
 import {
   ArrowRight,
   ShieldCheck,
-  Zap,
   Activity,
-  Box,
-  MessageSquare,
-  Database,
-  Lock,
-  Stethoscope,
-  ChevronRight,
   Download,
-  Calculator
+  Shield,
+  Sparkles,
+  Server,
+  Users,
+  Clock,
+  CheckCircle2,
+  ChevronDown,
+  Mail,
+  Smartphone,
+  Eye,
+  Brain,
 } from "lucide-react";
-import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
 import { PageTransition } from "@/components/shared/page-transition";
+import { Card, CardContent } from "@/components/ui/card";
 
-const Hero3D = dynamic(() => import("@/components/shared/hero-3d").then(mod => mod.Hero3D), { 
-  ssr: false,
-  loading: () => <div className="absolute inset-0 -z-10 h-full w-full bg-cyan-500/5 animate-pulse" />
-});
+const FAQS = [
+  {
+    q: "How does the AI-powered auto-segmentation work?",
+    a: "Our deep-learning engine, built on state-of-the-art architectures like TotalSegmentator and nnU-Net, processes CT or MRI volume scans (NIfTI format). It automatically contours 117+ anatomical structures (bones, organs, vessels) in single-pass axial, sagittal, and coronal views. Triangle meshes are extracted using the Marching Cubes algorithm and converted to interactive, printable 3D models (STL, glTF) in under two minutes.",
+  },
+  {
+    q: "Is patient data secure? How is HIPAA compliance maintained?",
+    a: "Absolutely. Dosiation is designed with an on-premise-first approach. All DICOM ingestion, segmentation processing, and dose computations run entirely inside your local network via Docker. Patient Health Information (PHI) never leaves your firewall. No external API calls are made for inference or database operations in production environments.",
+  },
+  {
+    q: "What radiation dose metrics does the tracker capture?",
+    a: "Radiosh Tracker automatically parses DICOM metadata to extract key dosimetry parameters, including Entrance Skin Dose, CTDIvol, DLP, Exposure Time, and DAP. These values are mapped against standard k-factors (ICRP Publication 102) and size-specific corrections (AAPM Report 204) to calculate effective dose and Size-Specific Dose Estimates (SSDE).",
+  },
+  {
+    q: "How do we benchmark dose values?",
+    a: "The system compares actual exposures against national Diagnostic Reference Levels (DRL) from European Commission Radiation Protection 185 (2014) and local guidelines. Exceedances are highlighted on the dashboard for review. DRLs are treated as statistical investigation thresholds (75th percentile), not absolute legal dose limits.",
+  },
+];
 
 export default function Home() {
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+
   return (
     <PageTransition>
-      <div className="flex flex-col gap-32 pb-24">
-        
+      <div className="space-y-24 pb-16">
         {/* HERO SECTION */}
-        <section className="relative pt-24 pb-16 lg:pt-40 lg:pb-32 flex flex-col items-center text-center">
-          <Hero3D />
-          
+        <section className="relative pt-12 pb-6 text-center space-y-6">
+          <div className="absolute inset-0 -z-10 flex items-center justify-center">
+            <div className="h-[300px] w-[300px] rounded-full bg-cyan-500/10 blur-[80px] animate-pulse-glow" />
+            <div className="h-[200px] w-[200px] rounded-full bg-teal-500/10 blur-[60px] animate-pulse-glow [animation-delay:1.5s]" />
+          </div>
+
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="z-10 max-w-4xl px-4"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-500 to-teal-500 shadow-xl shadow-cyan-500/20"
           >
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-4 py-1.5 text-sm text-cyan-400">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
-              </span>
-              Aetherion v2.0 is now live
-            </div>
-            
-            <h1 className="text-5xl lg:text-7xl font-bold tracking-tight text-foreground leading-tight mb-6">
-              Radiation dose management <br className="hidden lg:block" />
-              <span className="text-gradient">& 3D imaging intelligence.</span>
-            </h1>
-            
-            <p className="text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
-              Aetherion builds clinical-grade open-source software for radiology — from automated DRL dose tracking to AI-powered multi-organ 3D segmentation.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="#products">
-                <Button size="lg" className="w-full sm:w-auto h-12 px-8 text-base bg-foreground text-background hover:bg-foreground/90">
-                  Explore products <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-              <Link href="/viewer">
-                <Button variant="outline" size="lg" className="w-full sm:w-auto h-12 px-8 text-base bg-background/50 backdrop-blur-md">
-                  Launch 3D Viewer
-                </Button>
-              </Link>
-            </div>
+            <Brain className="h-7 w-7 text-white" />
           </motion.div>
 
-          {/* Stats Row */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
+          <div className="space-y-3">
+            <motion.h1
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="text-4xl sm:text-6xl font-bold tracking-tight text-white leading-tight"
+            >
+              Dosiation
+              <br />
+              <span className="text-gradient">Medical Imaging Intelligence</span>
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="mx-auto max-w-2xl text-base sm:text-lg text-muted-foreground leading-relaxed"
+            >
+              Clinical-grade software for radiology departments — automated dose tracking,
+              AI-powered 3D segmentation, and HIPAA-compliant reporting. Open-source portfolio edition.
+            </motion.p>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            className="z-10 mt-24 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16 border-y border-border/50 py-8 w-full max-w-5xl px-4"
+            transition={{ delay: 0.3 }}
+            className="flex flex-wrap justify-center gap-4 pt-2"
           >
-            <div className="flex flex-col items-center gap-2">
-              <span className="text-4xl font-bold text-foreground">8</span>
-              <span className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Products Live</span>
-            </div>
-            <div className="flex flex-col items-center gap-2">
-              <span className="text-4xl font-bold text-cyan-400">95%</span>
-              <span className="text-sm font-medium text-muted-foreground uppercase tracking-wider">QA Time Saved</span>
-            </div>
-            <div className="flex flex-col items-center gap-2">
-              <span className="text-4xl font-bold text-foreground">100%</span>
-              <span className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Open Source</span>
-            </div>
+            <Link href="/auto-segmentation">
+              <Button variant="gradient" size="lg" className="shadow-lg shadow-cyan-500/10">
+                Auto-Seg 3D
+                <ArrowRight className="h-4 w-4 ml-1" />
+              </Button>
+            </Link>
+            <Link href="/radiosh-tracker">
+              <Button variant="outline" size="lg" className="border-border hover:bg-white/5">
+                Dose Tracker AI
+              </Button>
+            </Link>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="flex items-center justify-center gap-2 text-xs text-muted-foreground"
+          >
+            <Shield className="h-3.5 w-3.5 text-cyan-400" />
+            <span>Research and Portfolio Use Only · Clinical FDA 510(k) Mockup</span>
           </motion.div>
         </section>
 
-        {/* THE PRODUCT LINE */}
-        <section id="products" className="max-w-6xl mx-auto px-4 w-full scroll-mt-24">
-          <div className="text-center mb-16">
-            <h2 className="text-sm font-bold tracking-widest text-cyan-500 uppercase mb-4">— The product line —</h2>
-            <h3 className="text-3xl md:text-5xl font-bold text-foreground mb-6">One platform. A growing family of tools.</h3>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Each Aetherion product solves one problem deeply — and shares the same secure, web-native foundation.
+        {/* PRODUCTS SECTION */}
+        <section id="products" className="space-y-12">
+          <div className="text-center space-y-2">
+            <h2 className="text-2xl sm:text-4xl font-bold text-white">Our Products</h2>
+            <p className="text-sm sm:text-base text-muted-foreground max-w-lg mx-auto">
+              Each product solves one problem deeply, built on a shared, secure, on-prem-first foundation.
             </p>
           </div>
 
-          <div className="space-y-24">
-            {/* Product 01 */}
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div className="order-2 md:order-1">
-                <p className="text-sm text-muted-foreground font-mono mb-4">Product 01 · Web app · Live</p>
-                <h4 className="text-3xl font-bold text-foreground mb-4">AI Dose Tracker</h4>
-                <p className="text-muted-foreground text-lg mb-6 leading-relaxed">
-                  Streamline radiation dose management with automated DRL compliance, instant ICRP-102/AAPM-204 dose analysis, and natural-language AI queries. The dose-tracking layer for modern radiology.
+          <div className="grid gap-8 md:grid-cols-3">
+            {/* PRODUCT 1: Tracker */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="glass-card rounded-2xl p-6 flex flex-col justify-between hover:border-cyan-500/30 transition-all duration-300 group"
+            >
+              <div className="space-y-4">
+                <div className="h-12 w-12 rounded-xl bg-cyan-500/10 flex items-center justify-center border border-cyan-500/20">
+                  <Activity className="h-6 w-6 text-cyan-400" />
+                </div>
+                <h3 className="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors">
+                  Radiosh Tracker AI
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Streamline radiation dose management with automated DRL compliance, instant dose analysis,
+                  and audit-ready reports. The dose-tracking layer for modern radiology.
                 </p>
-                <Link href="/dose-calculator" className="inline-flex items-center text-cyan-400 hover:text-cyan-300 font-medium text-lg transition-colors group">
-                  Tour Dose Tracker <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
               </div>
-              <div className="order-1 md:order-2 glass-card rounded-2xl aspect-[4/3] flex items-center justify-center p-8 bg-gradient-to-br from-cyan-500/10 to-transparent border border-cyan-500/20">
-                <Activity className="w-32 h-32 text-cyan-400 opacity-80" />
-              </div>
-            </div>
+              <Link href="/radiosh-tracker" className="pt-6 block">
+                <Button variant="ghost" className="p-0 text-cyan-400 hover:text-cyan-300 hover:bg-transparent flex items-center gap-1">
+                  Tour Radiosh Tracker <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
+            </motion.div>
 
-            {/* Product 02 */}
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div className="glass-card rounded-2xl aspect-[4/3] flex items-center justify-center p-8 bg-gradient-to-br from-teal-500/10 to-transparent border border-teal-500/20">
-                <Box className="w-32 h-32 text-teal-400 opacity-80" />
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground font-mono mb-4">Product 02 · Web app · Live</p>
-                <h4 className="text-3xl font-bold text-foreground mb-4">Auto-Segmentation & 3D</h4>
-                <p className="text-muted-foreground text-lg mb-6 leading-relaxed">
-                  Turn CT and MRI volumes into clean, printable 3D models. AI-powered organ segmentation using TotalSegmentator — STL, OBJ, glTF in minutes, not hours.
+            {/* PRODUCT 2: Segmentation */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="glass-card rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/30 transition-all duration-300 group"
+            >
+              <div className="space-y-4">
+                <div className="h-12 w-12 rounded-xl bg-teal-500/10 flex items-center justify-center border border-teal-500/20">
+                  <Eye className="h-6 w-6 text-teal-400" />
+                </div>
+                <h3 className="text-xl font-bold text-white group-hover:text-teal-400 transition-colors">
+                  Auto-Segmentation & 3D
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Turn CT and MRI volumes into clean, printable 3D models. AI-powered organ and lesion
+                  segmentation — export STL, OBJ, glTF, and NIfTI files in minutes.
                 </p>
-                <ul className="space-y-2 mb-6 text-muted-foreground">
-                  <li className="flex items-center gap-2"><CheckIcon /> 117+ anatomical structures</li>
-                  <li className="flex items-center gap-2"><CheckIcon /> Auto-contoured in a single pass</li>
-                </ul>
-                <Link href="/viewer" className="inline-flex items-center text-teal-400 hover:text-teal-300 font-medium text-lg transition-colors group">
-                  Tour Auto-Segmentation <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
               </div>
-            </div>
+              <Link href="/auto-segmentation" className="pt-6 block">
+                <Button variant="ghost" className="p-0 text-teal-400 hover:text-teal-300 hover:bg-transparent flex items-center gap-1">
+                  Tour Auto-Segmentation <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
+            </motion.div>
 
-            {/* Product 03 */}
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div className="order-2 md:order-1">
-                <p className="text-sm text-muted-foreground font-mono mb-4">Product 03 · Web app · Live</p>
-                <h4 className="text-3xl font-bold text-foreground mb-4">AI Imaging Assistant</h4>
-                <p className="text-muted-foreground text-lg mb-6 leading-relaxed">
-                  Interactive reference tool for medical physics students, educators, and professionals. Ask questions about DICOM metadata, scan parameters, and clinical terminology.
+            {/* PRODUCT 3: Mobile */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="glass-card rounded-2xl p-6 flex flex-col justify-between hover:border-purple-500/30 transition-all duration-300 group"
+            >
+              <div className="space-y-4">
+                <div className="h-12 w-12 rounded-xl bg-purple-500/10 flex items-center justify-center border border-purple-500/20">
+                  <Smartphone className="h-6 w-6 text-purple-400" />
+                </div>
+                <h3 className="text-xl font-bold text-white group-hover:text-purple-400 transition-colors">
+                  Radiosh Mobile
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Interactive radiation dosimetry simulator and reference tool for medical physics
+                  students, educators, and professionals. Free reference companion app.
                 </p>
-                <Link href="/assistant" className="inline-flex items-center text-purple-400 hover:text-purple-300 font-medium text-lg transition-colors group">
-                  Try AI Assistant <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
               </div>
-              <div className="order-1 md:order-2 glass-card rounded-2xl aspect-[4/3] flex items-center justify-center p-8 bg-gradient-to-br from-purple-500/10 to-transparent border border-purple-500/20">
-                <MessageSquare className="w-32 h-32 text-purple-400 opacity-80" />
+              <div className="pt-6">
+                <span className="text-xs rounded-full bg-purple-500/10 border border-purple-500/20 px-2.5 py-1 text-purple-400 inline-block font-medium">
+                  Free Companion Simulator
+                </span>
               </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* SHARED FOUNDATION SECTION */}
+        <section className="space-y-12 bg-white/[0.01] border-y border-border/50 py-16 -mx-4 px-4 sm:-mx-8 sm:px-8">
+          <div className="max-w-7xl mx-auto space-y-12">
+            <div className="text-center space-y-2">
+              <h2 className="text-2xl sm:text-4xl font-bold text-white">One Shared Foundation</h2>
+              <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto">
+                Every Dosiation product is built on the same principles: secure, fast, and obvious to use.
+              </p>
+            </div>
+
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              <Card className="glass-card border-none">
+                <CardContent className="p-6 space-y-3">
+                  <Server className="h-8 w-8 text-cyan-400" />
+                  <h4 className="text-base font-bold text-white">HIPAA-First by Design</h4>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Offline processing. PHI stays entirely on your network. Zero external API dependencies in local mode. Available on-premise.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="glass-card border-none">
+                <CardContent className="p-6 space-y-3">
+                  <Users className="h-8 w-8 text-teal-400" />
+                  <h4 className="text-base font-bold text-white">Built by Physicists</h4>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Designed alongside clinical medical physicists and radiologists. No bloated dashboards — just clear workflows your team actually uses.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="glass-card border-none">
+                <CardContent className="p-6 space-y-3">
+                  <Clock className="h-8 w-8 text-purple-400" />
+                  <h4 className="text-base font-bold text-white">Reclaim Your Week</h4>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Replace manual dose spreadsheets, ad-hoc segmentation scripts, and per-modality reports with a single unified workspace.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="glass-card border-none">
+                <CardContent className="p-6 space-y-3">
+                  <CheckCircle2 className="h-8 w-8 text-emerald-400" />
+                  <h4 className="text-base font-bold text-white">Expected ROI</h4>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Pilot sites recover software investments in under three months — through clinical QA hours saved and avoided audit penalties.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="glass-card border-none">
+                <CardContent className="p-6 space-y-3">
+                  <Sparkles className="h-8 w-8 text-amber-400" />
+                  <h4 className="text-base font-bold text-white">Easy to Deploy</h4>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Docker-native, PACS-friendly. Most radiology departments are tracking dose or generating 3D models within 15 minutes of install.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="glass-card border-none">
+                <CardContent className="p-6 space-y-3">
+                  <Brain className="h-8 w-8 text-pink-400" />
+                  <h4 className="text-base font-bold text-white">Unified Platform</h4>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Unified accounts, shared PACS/DICOM ingestion, and common administrative controls. Add new modules without changing your infrastructure.
+                  </p>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </section>
 
-        {/* WHY AETHERION */}
-        <section className="max-w-6xl mx-auto px-4 w-full">
-          <div className="text-center mb-16">
-            <h2 className="text-sm font-bold tracking-widest text-cyan-500 uppercase mb-4">— Why Aetherion —</h2>
-            <h3 className="text-3xl md:text-5xl font-bold text-foreground mb-6">Clinical-grade, end-to-end.</h3>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Every Aetherion product is built on the same principles: secure, fast, and obvious to use.
-            </p>
+        {/* INTERACTIVE WORKFLOW PREVIEWS */}
+        <section className="space-y-16">
+          {/* WORKFLOW 1: Auto Segmentation */}
+          <div className="grid gap-8 lg:grid-cols-2 items-center">
+            <div className="space-y-6">
+              <div className="inline-flex items-center gap-2 rounded-full bg-cyan-500/10 px-3 py-1 text-xs text-cyan-400 border border-cyan-500/20">
+                <Sparkles className="h-3.5 w-3.5" />
+                AI Auto-Segmentation
+              </div>
+              <h2 className="text-3xl font-bold text-white">From Scan to 3D Model in Minutes</h2>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Anatomical structures automatically contoured from CT or MRI volume scans. Support for 117+
+                structures generated in a single pass. Export segmentation files directly to your PACS
+                (DICOM-SEG) or 3D modeling programs (STL, glTF).
+              </p>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-cyan-400" />
+                  Whole-body organ sets, vasculature, and skeletal structures.
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-cyan-400" />
+                  Real-time interactive 3D rendering with isolate and opacity toggles.
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-cyan-400" />
+                  DICOM-SEG round-trip support for immediate PACS archiving.
+                </li>
+              </ul>
+              <Link href="/auto-segmentation" className="inline-block">
+                <Button variant="gradient">
+                  Launch 3D Workspace
+                  <ArrowRight className="h-4 w-4 ml-1.5" />
+                </Button>
+              </Link>
+            </div>
+
+            <div className="glass-card rounded-2xl p-4 aspect-[4/3] bg-black/40 flex flex-col justify-between border border-border/50 overflow-hidden relative group">
+              <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-transparent pointer-events-none" />
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border/30 pb-2">
+                <span>Auto-Segmentation Output Preview</span>
+                <span className="rounded bg-cyan-500/10 px-2 py-0.5 text-cyan-400">TotalSegmentator v2</span>
+              </div>
+              <div className="flex-1 flex items-center justify-center p-4">
+                <div className="relative w-full max-w-[280px] aspect-square rounded-xl border border-dashed border-cyan-500/30 flex flex-col items-center justify-center text-center p-4 bg-cyan-500/[0.02]">
+                  <Eye className="h-10 w-10 text-cyan-400/80 mb-3 animate-float" />
+                  <p className="text-sm font-semibold text-white mb-1">Interactive 3D Workspace</p>
+                  <p className="text-xs text-muted-foreground">
+                    Upload clinical scans to view 2D cross-sections and manipulate multi-organ meshes.
+                  </p>
+                </div>
+              </div>
+              <div className="text-center text-[10px] text-muted-foreground/60 border-t border-border/30 pt-2">
+                Supported formats: STL, OBJ, glTF, NIfTI, DICOM-SEG
+              </div>
+            </div>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 mb-16">
-            <div className="glass-card p-8 rounded-2xl">
-              <Lock className="w-8 h-8 text-cyan-400 mb-6" />
-              <h4 className="text-xl font-bold text-foreground mb-3">Security-first by design</h4>
-              <p className="text-muted-foreground leading-relaxed mb-4">
-                Client-side processing where possible. Open-source transparency. Strict CSP headers and rate-limiting built-in.
-              </p>
-              <span className="text-sm font-medium text-foreground flex items-center gap-2"><CheckIcon /> Full audit trail across all products</span>
-            </div>
-            
-            <div className="glass-card p-8 rounded-2xl">
-              <Database className="w-8 h-8 text-cyan-400 mb-6" />
-              <h4 className="text-xl font-bold text-foreground mb-3">One platform, one login</h4>
-              <p className="text-muted-foreground leading-relaxed mb-4">
-                Unified accounts via Supabase, shared dataset libraries, common analytics admin. Access the whole suite instantly.
-              </p>
-              <span className="text-sm font-medium text-foreground flex items-center gap-2"><CheckIcon /> Single deployment for the suite</span>
+          {/* WORKFLOW 2: Dose Tracker */}
+          <div className="grid gap-8 lg:grid-cols-2 items-center">
+            <div className="glass-card rounded-2xl p-4 aspect-[4/3] bg-black/40 flex flex-col justify-between border border-border/50 overflow-hidden relative group order-last lg:order-first">
+              <div className="absolute inset-0 bg-gradient-to-br from-teal-500/5 to-transparent pointer-events-none" />
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border/30 pb-2">
+                <span>Radiosh Tracker AI Console</span>
+                <span className="rounded bg-teal-500/10 px-2 py-0.5 text-teal-400">Audit-Ready</span>
+              </div>
+              <div className="flex-1 flex items-center justify-center p-4">
+                <div className="relative w-full max-w-[280px] aspect-square rounded-xl border border-dashed border-teal-500/30 flex flex-col items-center justify-center text-center p-4 bg-teal-500/[0.02]">
+                  <Activity className="h-10 w-10 text-teal-400/80 mb-3 animate-pulse-glow" />
+                  <p className="text-sm font-semibold text-white mb-1">Dose Queries & Analytics</p>
+                  <p className="text-xs text-muted-foreground">
+                    Execute natural language queries, generate DRL compliance reports, and review charts.
+                  </p>
+                </div>
+              </div>
+              <div className="text-center text-[10px] text-muted-foreground/60 border-t border-border/30 pt-2">
+                Complies with ICRP-102, AAPM-204 (SSDE) and EC-RP-185
+              </div>
             </div>
 
-            <div className="glass-card p-8 rounded-2xl">
-              <Stethoscope className="w-8 h-8 text-cyan-400 mb-6" />
-              <h4 className="text-xl font-bold text-foreground mb-3">Standards-based</h4>
-              <p className="text-muted-foreground leading-relaxed mb-4">
-                Built strictly on ICRP, AAPM, and EC-RP standards. No black-box math for dose tracking.
+            <div className="space-y-6">
+              <div className="inline-flex items-center gap-2 rounded-full bg-teal-500/10 px-3 py-1 text-xs text-teal-400 border border-teal-500/20">
+                <Activity className="h-3.5 w-3.5" />
+                Radiation Dose Tracking
+              </div>
+              <h2 className="text-3xl font-bold text-white">Real Reports, Real Workflows</h2>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Extract dose parameters (CTDIvol, DLP, DAP) automatically from incoming imaging scans.
+                Benchmark results against local and national thresholds. Use our AI agent to query cohort
+                tables, audit logs, and compliance statuses in plain language.
               </p>
-              <span className="text-sm font-medium text-foreground flex items-center gap-2"><CheckIcon /> Ships with national DRL libraries</span>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-y-12 gap-x-8 border-t border-border/50 pt-16">
-            <div>
-              <h5 className="text-4xl font-bold text-foreground mb-2">95%</h5>
-              <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest mb-4">QA time saved</p>
-              <h6 className="text-lg font-bold text-foreground mb-2">Reclaim your week.</h6>
-              <p className="text-muted-foreground">Replace manual dose log spreadsheets, ad-hoc segmentation scripts, and per-modality reports with a single workflow.</p>
-            </div>
-            <div>
-              <h5 className="text-4xl font-bold text-cyan-400 mb-2">Open</h5>
-              <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest mb-4">Source Architecture</p>
-              <h6 className="text-lg font-bold text-foreground mb-2">Maximum ROI.</h6>
-              <p className="text-muted-foreground">Zero licensing fees for research and education. Recover investment through QA hours saved immediately.</p>
-            </div>
-            <div>
-              <h5 className="text-4xl font-bold text-foreground mb-2">Day 1</h5>
-              <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest mb-4">Zero downtime</p>
-              <h6 className="text-lg font-bold text-foreground mb-2">Easy to deploy.</h6>
-              <p className="text-muted-foreground">Vercel-native, highly available. Most users are tracking dose or generating their first 3D model within minutes.</p>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-teal-400" />
+                  Automated Diagnostic Reference Level (DRL) compliance check.
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-teal-400" />
+                  AI-powered dose query console (text-to-table analytics).
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-teal-400" />
+                  One-click PDF compliance reports with charts and recommendations.
+                </li>
+              </ul>
+              <Link href="/radiosh-tracker" className="inline-block">
+                <Button variant="gradient" className="from-teal-500 to-emerald-500 shadow-teal-500/10">
+                  Open Dose Tracker
+                  <ArrowRight className="h-4 w-4 ml-1.5" />
+                </Button>
+              </Link>
             </div>
           </div>
         </section>
 
-        {/* INSIDE DOSE TRACKER */}
-        <section className="max-w-6xl mx-auto px-4 w-full">
-          <div className="text-center mb-16">
-            <h2 className="text-sm font-bold tracking-widest text-cyan-500 uppercase mb-4">— Inside Dose Tracker —</h2>
-            <h3 className="text-3xl md:text-5xl font-bold text-foreground mb-6">Real reports, real workflows.</h3>
+        {/* FAQ SECTION */}
+        <section className="space-y-8 max-w-3xl mx-auto">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white text-center">Frequently Asked Questions</h2>
+          <div className="space-y-4">
+            {FAQS.map((faq, i) => {
+              const isOpen = openFaq === i;
+              return (
+                <div key={i} className="glass-card rounded-xl overflow-hidden transition-all duration-300">
+                  <button
+                    onClick={() => setOpenFaq(isOpen ? null : i)}
+                    className="w-full flex items-center justify-between p-5 text-left text-sm font-medium text-white hover:bg-white/[0.02]"
+                  >
+                    <span>{faq.q}</span>
+                    <ChevronDown className={`h-4 w-4 text-muted-foreground shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
+                  </button>
+                  {isOpen && (
+                    <div className="p-5 pt-0 text-xs sm:text-sm text-muted-foreground border-t border-border/30 leading-relaxed bg-white/[0.005]">
+                      {faq.a}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
+        </section>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            <Link href="/dose-calculator" className="glass-card rounded-2xl p-8 hover:border-cyan-500/30 transition-colors group block">
-              <div className="aspect-[16/9] bg-black/40 rounded-xl mb-6 flex items-center justify-center border border-white/5">
-                <Calculator className="w-16 h-16 text-cyan-400/50" />
-              </div>
-              <h4 className="text-xl font-bold text-foreground mb-2 group-hover:text-cyan-400 transition-colors">CT Dose Analysis</h4>
-              <p className="text-muted-foreground">Effective dose, SSDE, and DRL compliance — automatically calculated and benchmarked.</p>
+        {/* DEMO CTA SECTION */}
+        <section className="relative rounded-2xl glass-card p-8 sm:p-12 text-center space-y-6 overflow-hidden max-w-4xl mx-auto">
+          <div className="absolute inset-0 -z-10 bg-gradient-to-br from-cyan-500/10 via-transparent to-teal-500/5 pointer-events-none" />
+          <h2 className="text-3xl font-bold text-white">Bring your imaging data into the light.</h2>
+          <p className="text-sm text-muted-foreground max-w-xl mx-auto leading-relaxed">
+            Ready to explore? Tour the full, client-side interactive workspace. Test 3D organ mesh extraction
+            and check Diagnostic Reference Level compliance using our custom tools.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link href="/auto-segmentation">
+              <Button variant="gradient" size="lg">
+                Try Auto-Segmentation
+              </Button>
             </Link>
-
-            <Link href="/dose-query" className="glass-card rounded-2xl p-8 hover:border-cyan-500/30 transition-colors group block">
-              <div className="aspect-[16/9] bg-black/40 rounded-xl mb-6 flex items-center justify-center border border-white/5">
-                <Database className="w-16 h-16 text-cyan-400/50" />
-              </div>
-              <h4 className="text-xl font-bold text-foreground mb-2 group-hover:text-cyan-400 transition-colors">AI-powered Dose Queries</h4>
-              <p className="text-muted-foreground">Ask about patients, doses, and compliance in plain language — get instant SQL and clinical explanations.</p>
-            </Link>
-          </div>
-        </section>
-
-        {/* INSIDE AUTO SEGMENTATION */}
-        <section className="max-w-6xl mx-auto px-4 w-full">
-          <div className="text-center mb-16">
-            <h2 className="text-sm font-bold tracking-widest text-teal-500 uppercase mb-4">— Inside Auto-Seg 3D —</h2>
-            <h3 className="text-3xl md:text-5xl font-bold text-foreground mb-6">From scan to 3D model.</h3>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-8">
-            <Link href="/viewer" className="glass-card rounded-2xl p-8 hover:border-teal-500/30 transition-colors group block">
-              <div className="aspect-[16/9] bg-black/40 rounded-xl mb-6 flex items-center justify-center border border-white/5">
-                <Layers className="w-16 h-16 text-teal-400/50" />
-              </div>
-              <h4 className="text-xl font-bold text-foreground mb-2 group-hover:text-teal-400 transition-colors">Multi-organ segmentation</h4>
-              <p className="text-muted-foreground">117+ anatomical structures automatically contoured from CT — axial, sagittal, and coronal views.</p>
-            </Link>
-
-            <Link href="/export" className="glass-card rounded-2xl p-8 hover:border-teal-500/30 transition-colors group block">
-              <div className="aspect-[16/9] bg-black/40 rounded-xl mb-6 flex items-center justify-center border border-white/5">
-                <Download className="w-16 h-16 text-teal-400/50" />
-              </div>
-              <h4 className="text-xl font-bold text-foreground mb-2 group-hover:text-teal-400 transition-colors">3D rendering & STL export</h4>
-              <p className="text-muted-foreground">Full-body volume render with isolated organ layers — export to STL, OBJ, or glTF for 3D printing.</p>
-            </Link>
-          </div>
-        </section>
-
-        {/* TESTIMONIAL */}
-        <section className="max-w-4xl mx-auto px-4 w-full text-center my-12">
-          <blockquote className="text-2xl md:text-3xl font-medium leading-relaxed text-foreground mb-8">
-            "Aetherion replaced three spreadsheets and a Friday afternoon. We now calculate DRL compliance instantly — and Auto-Seg cut our 3D prep from a day to under an hour."
-          </blockquote>
-          <div className="flex items-center justify-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400 font-bold text-lg border border-cyan-500/30">
-              AH
-            </div>
-            <div className="text-left">
-              <p className="font-bold text-foreground">Amirali Hamzeh</p>
-              <p className="text-sm text-muted-foreground">Creator, Aetherion Medical Imaging</p>
-            </div>
-          </div>
-        </section>
-
-        {/* FAQ */}
-        <section className="max-w-3xl mx-auto px-4 w-full">
-          <div className="text-center mb-16">
-            <h2 className="text-sm font-bold tracking-widest text-cyan-500 uppercase mb-4">— FAQ —</h2>
-            <h3 className="text-3xl md:text-5xl font-bold text-foreground mb-6">Common questions.</h3>
-          </div>
-
-          <div className="space-y-8">
-            <div>
-              <h4 className="text-xl font-bold text-foreground mb-3">How are Aetherion products related?</h4>
-              <p className="text-muted-foreground leading-relaxed">
-                All products share one platform — same authentication, same dashboards. Dose Calculator handles metrics; Auto-Segmentation handles 3D models from CT/MRI.
-              </p>
-            </div>
-            <div>
-              <h4 className="text-xl font-bold text-foreground mb-3">What output formats does Auto-Segmentation export?</h4>
-              <p className="text-muted-foreground leading-relaxed">
-                STL and OBJ for 3D printing, glTF for AR/VR and web rendering, NIfTI for downstream research, and DICOM-SEG for round-tripping back into a PACS.
-              </p>
-            </div>
-            <div>
-              <h4 className="text-xl font-bold text-foreground mb-3">Is this safe for clinical use?</h4>
-              <p className="text-muted-foreground leading-relaxed">
-                No. This is an open-source educational and research platform. Any tool that informs diagnosis or treatment is a regulated medical device. Aetherion is strictly for demonstration and learning.
-              </p>
-            </div>
+            <a href="mailto:info@dosiation.com?subject=Dosiation%20Open%20Source%20Query">
+              <Button variant="outline" size="lg" className="border-border hover:bg-white/5 flex items-center gap-2">
+                <Mail className="h-4 w-4" />
+                Contact Team
+              </Button>
+            </a>
           </div>
         </section>
 

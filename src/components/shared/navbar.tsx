@@ -20,14 +20,10 @@ import {
 import { useState } from "react";
 
 const NAV_ITEMS = [
-  { href: "/viewer", label: "3D Viewer", icon: Eye },
+  { href: "/auto-segmentation", label: "Auto-Seg 3D", icon: Eye },
+  { href: "/radiosh-tracker", label: "Dose Tracker", icon: Activity },
   { href: "/dose-calculator", label: "Dose Calculator", icon: Calculator },
-  { href: "/dose-query", label: "Dose Query", icon: Database },
-  { href: "/datasets", label: "Datasets", icon: ChartArea },
-  { href: "/assistant", label: "AI Assistant", icon: MessageSquare },
-  { href: "/dashboard", label: "Dashboard", icon: Activity },
   { href: "/observability", label: "Observability", icon: Brain },
-  { href: "/export", label: "Export", icon: Download },
 ];
 
 export function Navbar() {
@@ -43,8 +39,8 @@ export function Navbar() {
               <Brain className="h-5 w-5 text-white" />
             </div>
             <span className="text-lg font-bold tracking-tight">
-              <span className="text-gradient">Aetherion</span>
-              <span className="text-muted-foreground ml-1">Medical</span>
+              <span className="text-gradient">Dosiation</span>
+              <span className="text-xs text-muted-foreground/60 font-normal ml-1.5 uppercase tracking-wider hidden sm:inline">Open Source</span>
             </span>
           </Link>
 

@@ -16,9 +16,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Aetherion Medical Imaging — AI-Powered Radiology Platform",
+  title: "Dosiation — Medical Imaging Intelligence",
   description:
-    "Open-source AI-powered medical imaging platform. 3D organ segmentation, radiation dose tracking, and AI-assisted analysis. For educational and research use only.",
+    "Clinical-grade software for radiology departments — automated dose tracking, AI-powered 3D segmentation, and HIPAA-compliant reporting. Open-source portfolio version.",
 };
 
 export default function RootLayout({
@@ -40,7 +40,7 @@ export default function RootLayout({
           </main>
           <footer className="border-t border-border/50 py-6">
             <div className="mx-auto max-w-7xl px-4 text-center text-xs text-muted-foreground">
-              <p className="mb-1">Aetherion Medical Imaging — For educational and research use only</p>
+              <p className="mb-1">Dosiation (Open Source) — For educational and research use only</p>
               <p>Not cleared for clinical or diagnostic use. Not a substitute for professional medical advice.</p>
             </div>
           </footer>
